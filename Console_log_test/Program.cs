@@ -11,37 +11,72 @@ namespace Console_log_test
     {
         static void Main(string[] args)
         {
-            var sw1 = new Stopwatch();
-            var sw2 = new Stopwatch();
+            //var sw1 = new Stopwatch();
+            //var sw2 = new Stopwatch();
 
-            sw1.Start();
-            for (int i = 0; i < 1000; i++)
+            //sw1.Start();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    //Thread.Sleep(1000);
+            //    var logobj = new logObj { time = DateTime.Now, Status = "NORMAL", message = $"count:{i}" };
+            //    var sb = new StringBuilder();
+            //    sb.Append(logobj.time.ToString("yy/MM/dd hh:mm:ss"));
+            //    sb.Append("[");
+            //    sb.Append(logobj.Status);
+            //    sb.Append("]");
+            //    sb.Append(logobj.message);
+            //    Console.WriteLine(sb.ToString());
+            //}
+            //sw1.Stop();
+
+            //sw2.Start();
+            //var log = new logger(Console.Out);
+            //log.StartOutput();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    //Thread.Sleep(1000);
+            //    var logobj = new logObj { time = DateTime.Now, Status = "NORMAL", message = $"count:{i}" };
+            //    log.log(logobj);
+            //}
+            //log.Dispose();
+            //sw2.Stop();
+            //Console.WriteLine($"time:{sw1.ElapsedMilliseconds}");
+            //Console.WriteLine($"time:{sw2.ElapsedMilliseconds}");
+
+            
+            for (int i = 1; i <= 100; i++)
             {
-                //Thread.Sleep(1000);
+                Thread.Sleep(20);
                 var logobj = new logObj { time = DateTime.Now, Status = "NORMAL", message = $"count:{i}" };
                 var sb = new StringBuilder();
+                sb.Append("\r");
                 sb.Append(logobj.time.ToString("yy/MM/dd hh:mm:ss"));
                 sb.Append("[");
                 sb.Append(logobj.Status);
                 sb.Append("]");
-                sb.Append(logobj.message);
-                Console.WriteLine(sb.ToString());
-            }
-            sw1.Stop();
+                sb.Append("[");
+                var coo = Console.BufferWidth - sb.Length - 5;
+                var length = coo * ((float)i / 100f);
+                for (int j = 0; j <= coo; j++)
+                {
+                    if (j < (int)Math.Ceiling(length))
+                    {
+                        sb.Append("=");
+                        continue;
+                    }
+                    if (j == (int)Math.Ceiling(length))
+                    {
+                        sb.Append(">");
+                        continue;
+                    }
+                    sb.Append(" ");
+                }
+                sb.Append("]");
+                sb.Append($"{i}%");
 
-            sw2.Start();
-            var log = new logger(Console.Out);
-            log.StartOutput();
-            for (int i = 0; i < 1000; i++)
-            {
-                //Thread.Sleep(1000);
-                var logobj = new logObj { time = DateTime.Now, Status = "NORMAL", message = $"count:{i}" };
-                log.log(logobj);
+
+                Console.Write(sb.ToString());
             }
-            log.Dispose();
-            sw2.Stop();
-            Console.WriteLine($"time:{sw1.ElapsedMilliseconds}");
-            Console.WriteLine($"time:{sw2.ElapsedMilliseconds}");
 
         }
     }
@@ -108,6 +143,8 @@ namespace Console_log_test
                 sb.Append(log.message);
                 stream.WriteLine(sb.ToString());
                 if (token.IsCancellationRequested) return;
+
+
 
             }
 
